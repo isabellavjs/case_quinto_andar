@@ -1,0 +1,38 @@
+Project visit_services {
+  database_type: 'PostgreSQL'
+  Note: 'Serviço de agendamento de visitas a propriedades do Quinto Andar'
+}
+
+// Copie e cole o código abaixo para gerar o diagrama de entidade no https://dbdiagram.io/ 
+
+Table properties {
+  id integer [primary key]
+  property_id integer
+  neighborhood varchar [not null]
+  status varchar [not null]
+  inserted_at timestamp
+  Note: 'Armazena o histórico de transações dos imóveis' 
+}
+
+Table visits {
+  id integer [primary key]
+  property_id integer
+  agent_id integer
+  scheduled_at timestamp
+  effected boolean [Note: 'Indica se a visita foi efetivada']
+  Note: 'Armazena o histórico de visita aos imóveis'
+}
+
+Table agents {
+  id integer [primary key]
+  first_name varchar [not null]
+  last_name varchar [not null]
+  birth_date date [not null]
+  active boolean [not null] [Note: 'Indica se o corretor está ativo']
+  inserted_at timestamp
+  Note: 'Armazena os dados dos corretores cadastrados no sistema'
+}
+
+Ref: agents.id < visits.agent_id
+
+Ref: properties.property_id < visits.property_id
